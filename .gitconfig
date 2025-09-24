@@ -1,0 +1,44 @@
+[alias]
+  ap = add -p
+  b = branch
+  logf = log --date=iso --pretty=format:'%C(auto)%h [%ai] %aN:%d %s'
+  logg = log --graph --decorate=full
+  logo = log --oneline
+  logG = log --source --all -G
+  co = checkout
+  com = commit
+  coma = commit --amend
+  comm = commit -m
+  con = \
+    "!f(){                                                     "\
+    "  if [ $1 -lt 0 ]; then                                   "\
+    "    LEN=`git branch | wc -l`;                             "\
+    "    INDEX=$((${LEN}+1-($1*(-1))));                        "\
+    "  else                                                    "\
+    "    INDEX=$1;                                             "\
+    "  fi;                                                     "\
+    "  BRANCH=`git branch | sed -n ${INDEX}p | sed -e 's/ //'`;"\
+    "  git checkout ${BRANCH};                                 "\
+    "  git branch;                                             "\
+    "}; f                                                      "
+  cp = cherry-pick
+  df = diff --ws-error-highlight=all
+  dfc = df --cached
+  dfno = df --name-only
+  fc = fetch
+  rs = reset --soft
+  rv = revert
+  rvne = revert --no-edit
+  showno = show --name-only
+  sl = stash list
+  ss = stash save
+  ssh = "!f(){ git stash show $2 stash@{$1};};f"
+  st = status
+  rH = reset HEAD
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore
+  pager = "LESSCHARSET=utf-8 less"
+  quotepath = false
+[include]
+  path = ~/.gitconfig.local

@@ -1,0 +1,76 @@
+
+# enable color support of ls and also add handy aliases
+if ls --version 2>/dev/null | grep -q 'GNU coreutils'; then
+  if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+
+  fi
+else
+  # BSD
+  alias ls='ls -G'
+fi
+
+# Alias
+alias dates='date +%Y%m%d_%H%M%S'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias hist='history'
+alias hista='history -E 1'
+alias l='ls -CF'
+alias l1='ls -1'
+alias la='ls -A'
+alias ll='ls -alF'
+alias g="git"
+case $(uname) in
+  Darwin)
+    alias ldd='otool -L'
+    alias lscpu='sysctl -a machdep.cpu'
+    alias lshw='system_profiler'
+    alias lsblk='diskutil list'
+    alias lsmod='kextstat'
+    alias lsusb='system_profiler SPUSBDataType'
+    ;;
+  Linux)
+    ;;
+esac
+
+# History
+export HISTSIZE=1000
+
+# eza
+if command -v eza &> /dev/null; then
+  export EXA_COLORS='da=38;5;045:uu=38;5;120'
+  alias le='eza -l'
+  alias tre='eza --tree -I "*.pyc|__pycache__|pyu.egg-info"'
+fi
+
+# fzf
+if command -v fzf &> /dev/null; then
+  readonly COMMON_OPTS='-I --hidden --follow \
+    --exclude .git \
+    --exclude .pytest_cache \
+    --exclude .venv \
+    --exclude __pycache__ \
+    --exclude build \
+    --exclude "*.egg-info" \
+    '
+  if command -v fd &> /dev/null; then
+    export FZF_DEFAULT_COMMAND="fd --type f ${COMMON_OPTS}"
+    export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+    export FZF_ALT_C_COMMAND="fd --type d ${COMMON_OPTS}"
+  fi
+
+  export FZF_CTRL_R_OPTS="
+    --preview 'echo {}' --preview-window up:3:hidden:wrap
+    --bind 'ctrl-/:toggle-preview'
+    --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+    --color header:italic
+    --header 'Press CTRL-Y to copy command into clipboard'"
+  export FZF_CTRL_T_OPTS="
+    --preview 'bat -n --color=always {}'
+    --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+  export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
+fi
+
