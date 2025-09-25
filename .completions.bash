@@ -11,7 +11,7 @@ function _get_dir_names() {
 
 function _cdd() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
-  local base_dir=${HOME}/devel/
+  local base_dir=${DEVEL_PATH}/
   local dir_names=$(_get_dir_names "$base_dir")
   COMPREPLY=($(compgen -W "${dir_names}" -- "${cur}"))
 }

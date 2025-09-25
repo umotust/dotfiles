@@ -58,8 +58,8 @@ setopt PROMPT_SUBST
 #for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
 PROMPT="\$vcs_info_msg_0_:%F{050}%~%f❯ "
 
-[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 [ -f ~/.functions.sh ] && source ~/.functions.sh
 [ -f ~/.completions.zsh ] && source ~/.completions.zsh
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

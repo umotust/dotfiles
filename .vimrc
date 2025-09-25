@@ -109,6 +109,9 @@ if !empty(glob(expand(s:vim_home . '/autoload/plug.vim')))
   nmap <Leader>w <Plug>(easymotion-overwin-w)
 
   "@ color
+  if has("termguicolors")
+    set termguicolors
+  endif
   if !empty(glob(expand(s:vim_home . "/plugged/iceberg.vim")))
     colorscheme iceberg
   endif
