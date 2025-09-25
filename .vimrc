@@ -2,18 +2,18 @@
 "@--- Plugin manager --------------------------------------------
 "@---------------------------------------------------------------
 if exists('$VIM_HOME')
-  let s:vim_home = $VIM_HOME
+  let g:vim_home = $VIM_HOME
 else
-  let s:vim_home = $HOME . '/.vim'
+  let g:vim_home = $HOME . '/.vim'
 endif
 
-let s:plug_path = expand(s:vim_home . '/autoload/plug.vim')
+let s:plug_path = expand(g:vim_home . '/autoload/plug.vim')
 if filereadable(s:plug_path)
   execute 'source ' . fnameescape(s:plug_path)
 endif
 
-if !empty(glob(expand(s:vim_home . '/autoload/plug.vim')))
-  call plug#begin(expand(s:vim_home . '/plugged'))
+if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
+  call plug#begin(expand(g:vim_home . '/plugged'))
   Plug 'airblade/vim-gitgutter'             "@ status on left side
   Plug 'ap/vim-css-color'                   "@ color
   Plug 'chase/vim-ansible-yaml'             "@ ansible
@@ -112,7 +112,7 @@ if !empty(glob(expand(s:vim_home . '/autoload/plug.vim')))
   if has("termguicolors")
     set termguicolors
   endif
-  if !empty(glob(expand(s:vim_home . "/plugged/iceberg.vim")))
+  if !empty(glob(expand(g:vim_home . "/plugged/iceberg.vim")))
     colorscheme iceberg
   endif
   "set t_Co=256
