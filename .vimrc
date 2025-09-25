@@ -329,3 +329,7 @@ function! CloseAllAuxWindows()
     bwipeout! quickrun://output
   endif
 endfunction
+
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
