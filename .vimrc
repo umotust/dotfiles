@@ -49,7 +49,10 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   Plug 'umotust/vim-clang-format'           "@ clang-format
   Plug 'vim-scripts/applescript.vim'        "@ applescript
   "@ Language Server Protocol
-  if (v:version >= 802)
+  if (v:version >= 901)
+    let g:use_coc = 1
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  elseif (v:version >= 802)
     Plug 'prabirshrestha/asyncomplete.vim'     "@ completion
     Plug 'prabirshrestha/asyncomplete-lsp.vim' "@ completion
     Plug 'prabirshrestha/vim-lsp'              "@ lsp
@@ -144,49 +147,87 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   "@ isort
   let g:vim_isort_python_version = 'python3'
   "@ lsp
-  function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> gD <plug>(lsp-declaration)
-    nmap <buffer> gr <plug>(lsp-references)
-    nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-    let g:lsp_format_sync_timeout = 200
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+  if g:use_coc
+    "@ coc.nvim
+    function! CheckBackspace() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
 
-    let l:capabilities = lsp#get_server_capabilities('ruff')
-    if !empty(l:capabilities)
-      let l:capabilities.hoverProvider = v:false
+    function! ShowDocumentation()
+      if CocAction('hasProvider', 'hover')
+        call CocActionAsync('doHover')
+      else
+        call feedkeys('K', 'in')
+      endif
+    endfunction
+
+    set signcolumn=yes
+    inoremap <silent><expr> <TAB>
+          \ coc#pum#visible() ? coc#pum#next(1) :
+          \ CheckBackspace() ? "\<Tab>" :
+          \ coc#refresh()
+    inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                                  \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+    nmap <silent><nowait> gd <Plug>(coc-definition)
+    nmap <silent><nowait> gi <Plug>(coc-implementation)
+    nmap <silent><nowait> gr <Plug>(coc-references)
+    nmap <silent><nowait> gy <Plug>(coc-type-definition)
+    nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
+    nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
+    nnoremap <silent> K :call ShowDocumentation()<CR>
+    set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+    command! -nargs=0 Format :call CocActionAsync('format')
+    command! -nargs=? Fold   :call CocAction('fold', <f-args>)
+    command! -nargs=0 OR     :call CocActionAsync('runCommand', 'editor.action.organizeImport')
+  elseif !g:use_coc
+    "@ vim-lsp
+    function! s:on_lsp_buffer_enabled() abort
+      setlocal omnifunc=lsp#complete
+      setlocal signcolumn=yes
+      if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+      nmap <buffer> gd <plug>(lsp-definition)
+      nmap <buffer> gD <plug>(lsp-declaration)
+      nmap <buffer> gr <plug>(lsp-references)
+      nmap <buffer> gs <plug>(lsp-document-symbol-search)
+      nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+      nmap <buffer> gi <plug>(lsp-implementation)
+      nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+      nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+      nmap <buffer> K <plug>(lsp-hover)
+      let g:lsp_format_sync_timeout = 200
+      autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+      let l:capabilities = lsp#get_server_capabilities('ruff')
+      if !empty(l:capabilities)
+        let l:capabilities.hoverProvider = v:false
+      endif
+    endfunction
+    if executable('ruff')
+        au User lsp_setup call lsp#register_server({
+            \ 'name': 'ruff',
+            \ 'cmd': {server_info->['ruff', 'server']},
+            \ 'allowlist': ['python'],
+            \ 'workspace_config': {},
+            \ })
     endif
-  endfunction
-  if executable('ruff')
-      au User lsp_setup call lsp#register_server({
-          \ 'name': 'ruff',
-          \ 'cmd': {server_info->['ruff', 'server']},
-          \ 'allowlist': ['python'],
-          \ 'workspace_config': {},
-          \ })
-  endif
-  augroup lsp_install
-      au!
-      " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-      autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-  augroup END
-  let g:lsp_diagnostics_enabled = 1
-  let g:lsp_diagnostics_echo_cursor = 1
-  let g:lsp_diagnostics_echo_delay = 200
-  let g:lsp_document_highlight_enabled = 1
-  let g:lsp_diagnostics_virtual_text_enabled = 0
-  let g:asyncomplete_popup_delay = 200
-  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-  inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+    augroup lsp_install
+        au!
+        " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+        autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+    augroup END
+    let g:lsp_diagnostics_enabled = 1
+    let g:lsp_diagnostics_echo_cursor = 1
+    let g:lsp_diagnostics_echo_delay = 200
+    let g:lsp_document_highlight_enabled = 1
+    let g:lsp_diagnostics_virtual_text_enabled = 0
+    let g:asyncomplete_popup_delay = 200
+    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+  endif " !g:use_coc
   "@ ale
   let g:ale_sign_column_always = 1
   let g:ale_cpp_gcc_options = '-std=c++14'
