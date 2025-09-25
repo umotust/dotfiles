@@ -4,7 +4,7 @@
   logf = log --date=iso --pretty=format:'%C(auto)%h [%ai] %aN:%d %s'
   logg = log --graph --decorate=full
   logo = log --oneline
-  logG = log --source --all -G
+  loggrep = log --source --all -G
   co = checkout
   com = commit
   coma = commit --amend
