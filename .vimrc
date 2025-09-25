@@ -15,7 +15,6 @@ endif
 if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   call plug#begin(expand(g:vim_home . '/plugged'))
   Plug 'airblade/vim-gitgutter'             "@ status on left side
-  Plug 'ap/vim-css-color'                   "@ color
   Plug 'chase/vim-ansible-yaml'             "@ ansible
   Plug 'cocopon/iceberg.vim'                "@ color scheme
   Plug 'dzeban/vim-log-syntax'              "@ color .log
