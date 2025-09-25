@@ -49,9 +49,6 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   Plug 'hashivim/vim-terraform'             "@ terraform
   Plug 'umotust/vim-clang-format'           "@ clang-format
   Plug 'vim-scripts/applescript.vim'        "@ applescript
-  if (v:version >=901)
-    " Plug 'github/copilot.vim'                  "@ copilot
-  endif
   "@ Language Server Protocol
   if (v:version >= 802)
     Plug 'prabirshrestha/asyncomplete.vim'     "@ completion
