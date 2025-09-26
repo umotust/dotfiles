@@ -51,6 +51,7 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   "@ Language Server Protocol
   if (v:version >= 901)
     let g:use_coc = 1
+    "@ Configure in ~/.vim/coc-settings.json
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
   elseif (v:version >= 802)
     Plug 'prabirshrestha/asyncomplete.vim'     "@ completion
