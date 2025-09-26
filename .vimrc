@@ -112,6 +112,7 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
     set termguicolors
   endif
   if !empty(glob(expand(g:vim_home . "/plugged/iceberg.vim")))
+    set background=dark
     colorscheme iceberg
   endif
   "set t_Co=256
