@@ -147,7 +147,7 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   "@ isort
   let g:vim_isort_python_version = 'python3'
   "@ lsp
-  if g:use_coc
+  if exists('g:use_coc') && g:use_coc
     "@ coc.nvim
     function! CheckBackspace() abort
       let col = col('.') - 1
@@ -182,7 +182,7 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
     command! -nargs=0 Format :call CocActionAsync('format')
     command! -nargs=? Fold   :call CocAction('fold', <f-args>)
     command! -nargs=0 OR     :call CocActionAsync('runCommand', 'editor.action.organizeImport')
-  elseif !g:use_coc
+  else
     "@ vim-lsp
     function! s:on_lsp_buffer_enabled() abort
       setlocal omnifunc=lsp#complete
