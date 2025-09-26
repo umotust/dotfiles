@@ -131,7 +131,6 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
         \'outputter/buffer/close_on_empty': 1,
         \'runner' : 'vimproc'}
   let g:quickrun_config.cpp = {
-        \'command' : 'g++-9',
         \'cmdopt' : '-O3 -std=c++17' }
   let g:quickrun_config.python = {'command' : 'python3'}
   let g:quickrun_config.asciidoc = {
