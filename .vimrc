@@ -92,11 +92,12 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   else
     nnoremap <silent> [fzf]g :call FzfGrepFallback(0)<CR>
     nnoremap <silent> [fzf]G :call FzfGrepFallback(1)<CR>
+    xnoremap <silent> [fzf]G :call FzfGrepFallback(1)<CR>
     function! FzfGrepFallback(with_word) abort
       let l:cmd = 'grep -rnI --exclude-dir=.git .'
       let l:opts = '--ansi --prompt "grep> "'
       if a:with_word
-        let l:opts .= ' --query=' . shellescape(expand('<cword>'))
+        let l:opts .= ' --query=' . s:GetSearchWord()
       endif
       call fzf#run({
             \ 'source': l:cmd,
