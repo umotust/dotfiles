@@ -131,11 +131,8 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
       return strpart(l:lines[0], l:start[2]-1, l:end[2]-l:start[2]+1)
     endif
     " Multi-line selection
-    " First line: from start col to end
     let l:lines[0] = strpart(l:lines[0], l:start[2]-1)
-    " Last line: from beginning to end col
     let l:lines[-1] = strpart(l:lines[-1], 0, l:end[2])
-    " Join lines with space (or "\n" if you want actual newlines)
     return join(l:lines, ' ')
   endfunction
   "@ whitespace
