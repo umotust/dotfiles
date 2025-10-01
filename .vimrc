@@ -77,14 +77,17 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   nnoremap <silent> [fzf]h :<C-u>History<CR>
   nnoremap <silent> [fzf]l :<C-u>Lines<CR>
   nnoremap <silent> [fzf]t :<C-u>Tags<CR>
+  xnoremap [fzf] <Nop>
+  xmap ,f [fzf]
   "@ ripgrep
   if executable('rg')
     nnoremap <silent> [fzf]g :<C-u>Rg<CR>
     nnoremap <silent> [fzf]G :<C-u>RgWord<CR>
-    command! -bang -nargs=* RgWord
+    xnoremap <silent> [fzf]G :<C-u>RgWord<CR>
+    command! -bang -nargs=? RgWord
       \ call fzf#vim#grep(
       \   'rg --column --line-number --no-heading --color=always --smart-case -- .',
-      \   fzf#vim#with_preview({'options': '--query=' . expand('<cword>')}),
+      \   fzf#vim#with_preview({'options': '--query=' . s:GetSearchWord()}),
       \   <bang>0)
   else
     nnoremap <silent> [fzf]g :call FzfGrepFallback(0)<CR>
@@ -112,6 +115,28 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
       endfor
     endfunction
   endif
+  function! s:GetSearchWord() abort
+    if visualmode() != ''
+      return escape(s:GetVisualSelection(), ' ')
+    endif
+    return expand('<cword>')
+  endfunction
+  function! s:GetVisualSelection() abort
+    let l:start = getpos("'<")
+    let l:end   = getpos("'>")
+    let l:lines = getline(l:start[1], l:end[1])
+    " If selection is within a single line
+    if len(l:lines) == 1
+      return strpart(l:lines[0], l:start[2]-1, l:end[2]-l:start[2]+1)
+    endif
+    " Multi-line selection
+    " First line: from start col to end
+    let l:lines[0] = strpart(l:lines[0], l:start[2]-1)
+    " Last line: from beginning to end col
+    let l:lines[-1] = strpart(l:lines[-1], 0, l:end[2])
+    " Join lines with space (or "\n" if you want actual newlines)
+    return join(l:lines, ' ')
+  endfunction
   "@ whitespace
   let g:strip_whitespace_on_save = 1
   let g:strip_whitespace_confirm = 0
