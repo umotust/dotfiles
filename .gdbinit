@@ -6,7 +6,6 @@ set history filename ~/.gdb_history
 # Show
 set listsize 25
 set print elements 0
-set print pretty on
 set print demangle on
 set print asm-demangle on
 
