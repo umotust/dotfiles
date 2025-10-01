@@ -87,6 +87,7 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
       \   fzf#vim#with_preview({'options': '--query=' . expand('<cword>')}),
       \   <bang>0)
   else
+    nnoremap <silent> [fzf]g :call FzfGrepFallback()<CR>
     function! FzfGrepFallback()
       let l:cmd = 'grep -rnI --exclude-dir=.git .'
       call fzf#run({
@@ -95,7 +96,6 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
             \ 'options': '--ansi --prompt "grep> "'
             \ })
     endfunction
-    nnoremap <silent> [fzf]g :call FzfGrepFallback()<CR>
     function! s:grep_handler(lines) abort
       for l in a:lines
         let parts = split(l, ':', 3)
