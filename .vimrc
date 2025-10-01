@@ -87,23 +87,18 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
       \   fzf#vim#with_preview({'options': '--query=' . expand('<cword>')}),
       \   <bang>0)
   else
-    nnoremap <silent> [fzf]g :call FzfGrepFallback()<CR>
-    nnoremap <silent> [fzf]G :call FzfGrepFallbackWord()<CR>
-    function! FzfGrepFallback()
+    nnoremap <silent> [fzf]g :call FzfGrepFallback(0)<CR>
+    nnoremap <silent> [fzf]G :call FzfGrepFallback(1)<CR>
+    function! FzfGrepFallback(with_word) abort
       let l:cmd = 'grep -rnI --exclude-dir=.git .'
-      call fzf#run({
-            \ 'source': l:cmd,
-            \ 'sink*':   function('s:grep_handler'),
-            \ 'options': '--ansi --prompt "grep> "'
-            \ })
-    endfunction
-    function! FzfGrepFallbackWord()
-      let l:cmd = 'grep -rnI --exclude-dir=.git .'
-      let l:word = expand('<cword>')
+      let l:opts = '--ansi --prompt "grep> "'
+      if a:with_word
+        let l:opts .= ' --query=' . shellescape(expand('<cword>'))
+      endif
       call fzf#run({
             \ 'source': l:cmd,
             \ 'sink*': function('s:grep_handler'),
-            \ 'options': '--ansi --prompt "grep> " --query ' . shellescape(l:word)
+            \ 'options': l:opts
             \ })
     endfunction
     function! s:grep_handler(lines) abort
