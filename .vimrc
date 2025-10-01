@@ -96,18 +96,17 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
             \ })
     endfunction
     nnoremap <silent> [fzf]g :call FzfGrepFallback()<CR>
+    function! s:grep_handler(lines) abort
+      for l in a:lines
+        let parts = split(l, ':', 3)
+        if len(parts) >= 2
+          let fname = parts[0]
+          let lnum  = parts[1]
+          execute 'edit +' . lnum . ' ' . fname
+        endif
+      endfor
+    endfunction
   endif
-
-  function! s:grep_handler(lines) abort
-    for l in a:lines
-      let parts = split(l, ':', 3)
-      if len(parts) >= 2
-        let fname = parts[0]
-        let lnum  = parts[1]
-        execute 'edit +' . lnum . ' ' . fname
-      endif
-    endfor
-  endfunction
   "@ whitespace
   let g:strip_whitespace_on_save = 1
   let g:strip_whitespace_confirm = 0
