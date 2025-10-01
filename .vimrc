@@ -80,6 +80,12 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   "@ ripgrep
   if executable('rg')
     nnoremap <silent> [fzf]g :<C-u>Rg<CR>
+    nnoremap <silent> [fzf]G :<C-u>RgWord<CR>
+    command! -bang -nargs=* RgWord
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --no-heading --color=always --smart-case -- .',
+      \   fzf#vim#with_preview({'options': '--query=' . expand('<cword>')}),
+      \   <bang>0)
   else
     function! FzfGrepFallback()
       let l:cmd = 'grep -rnI --exclude-dir=.git .'
