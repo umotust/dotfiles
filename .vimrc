@@ -77,44 +77,30 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   nnoremap <silent> [fzf]h :<C-u>History<CR>
   nnoremap <silent> [fzf]l :<C-u>Lines<CR>
   nnoremap <silent> [fzf]t :<C-u>Tags<CR>
+  "@ ripgrep
   xnoremap [fzf] <Nop>
   xmap ,f [fzf]
-  "@ ripgrep
+  nnoremap <silent> [fzf]G :<C-u>SearchWord<CR>
+  xnoremap <silent> [fzf]G :<C-u>SearchWord<CR>
   if executable('rg')
     nnoremap <silent> [fzf]g :<C-u>Rg<CR>
-    nnoremap <silent> [fzf]G :<C-u>RgWord<CR>
-    xnoremap <silent> [fzf]G :<C-u>RgWord<CR>
-    command! -bang -nargs=? RgWord
+    command! -bang -nargs=? SearchWord
       \ call fzf#vim#grep(
       \   'rg --column --line-number --no-heading --color=always --smart-case -- .',
       \   fzf#vim#with_preview({'options': '--query=' . s:GetSearchWord()}),
       \   <bang>0)
   else
-    nnoremap <silent> [fzf]g :call FzfGrepFallback(0)<CR>
-    nnoremap <silent> [fzf]G :call FzfGrepFallback(1)<CR>
-    xnoremap <silent> [fzf]G :call FzfGrepFallback(1)<CR>
-    function! FzfGrepFallback(with_word) abort
-      let l:cmd = 'grep -rnI --exclude-dir=.git .'
-      let l:opts = '--ansi --prompt "grep> "'
-      if a:with_word
-        let l:opts .= ' --query=' . s:GetSearchWord()
-      endif
-      call fzf#run({
-            \ 'source': l:cmd,
-            \ 'sink*': function('s:grep_handler'),
-            \ 'options': l:opts
-            \ })
-    endfunction
-    function! s:grep_handler(lines) abort
-      for l in a:lines
-        let parts = split(l, ':', 3)
-        if len(parts) >= 2
-          let fname = parts[0]
-          let lnum  = parts[1]
-          execute 'edit +' . lnum . ' ' . fname
-        endif
-      endfor
-    endfunction
+    nnoremap <silent> [fzf]g :<C-u>FzfGrepFallback<CR>
+    command! -bang -nargs=? FzfGrepFallback
+      \ call fzf#vim#grep(
+      \   'grep -rnI .',
+      \   fzf#vim#with_preview({'options': '--query=' . fzf#shellescape(<q-args>)}),
+      \   <bang>0)
+    command! -bang -nargs=? SearchWord
+      \ call fzf#vim#grep(
+      \   'grep -rnI .',
+      \   fzf#vim#with_preview({'options': '--query=' . s:GetSearchWord()}),
+      \   <bang>0)
   endif
   function! s:GetSearchWord() abort
     if visualmode() != ''
