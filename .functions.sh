@@ -24,15 +24,15 @@ function cdd() {
 }
 
 function cddc() {
-  cd "~Documents/$1"
+  cd ~/Documents/$1
 }
 
 function cddw() {
-  cd "~/Downloads/$1"
+  cd ~/Downloads/$1
 }
 
 function cdpc() {
-  cd "~/Pictures/$1"
+  cd ~/Pictures/$1
 }
 
 function clipboard() {
