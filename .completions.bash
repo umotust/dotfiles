@@ -1,27 +1,42 @@
-function _get_dir_names() {
-  local base_dir="$1"
-  local IFS=$'\n'
-  local dir_names=()
-  for d in "${base_dir}"*/; do
-    d="${d%/}" # Remove the trailing slash
-    dir_names+=("${d##*/}") # Extract the directory name using built-in string manipulation
-  done
-  printf "%s\n" "${dir_names[@]}"
+# General directory completion under a base path
+function _dir_complete_base() {
+    local cur base
+    _init_completion || return
+
+    local IFS=$'\n'
+    compopt -o filenames
+
+    # base path is passed as first argument
+    base="$1"
+
+    # Generate directory completion
+    local -a dirs
+    dirs=($(compgen -d -- "$base/$cur"))
+
+    # Strip base prefix for cleaner display
+    COMPREPLY=()
+    for dir in "${dirs[@]}"; do
+        COMPREPLY+=("${dir#$base/}")
+    done
 }
 
 function _cdd() {
-  local cur="${COMP_WORDS[COMP_CWORD]}"
-  local base_dir=${DEVEL_PATH}/
-  local dir_names=$(_get_dir_names "$base_dir")
-  COMPREPLY=($(compgen -W "${dir_names}" -- "${cur}"))
+    _dir_complete_base "$DEVEL_PATH"
 }
 
 function _cddc() {
-  local cur="${COMP_WORDS[COMP_CWORD]}"
-  local dir_names="$(_get_dir_names ${HOME}/Documents/)"
-  echo $dir_names
-  COMPREPLY=($(compgen -W "${dir_names}" -- "${cur}"))
+    _dir_complete_base "$HOME/Documents"
 }
 
-complete -F _cdd cdd
-complete -F _cddc cddc
+function _cddw() {
+    _dir_complete_base "$HOME/Downloads"
+}
+
+function _cdpc() {
+    _dir_complete_base "$HOME/Pictures"
+}
+
+complete -F _cdd -o nospace cdd
+complete -F _cddc -o nospace cddc
+complete -F _cddw -o nospace cddw
+complete -F _cdpc -o nospace cdpc
