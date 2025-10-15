@@ -1,7 +1,14 @@
 # General directory completion under a base path
 function _dir_complete_base() {
     local cur base
-    _init_completion || return
+
+    # Only use _init_completion if available
+    if declare -F _init_completion >/dev/null 2>&1; then
+        _init_completion || return
+    else
+        # Fallback if bash-completion is not installed
+        cur="${COMP_WORDS[COMP_CWORD]}"
+    fi
 
     local IFS=$'\n'
     compopt -o filenames
