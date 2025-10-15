@@ -40,6 +40,7 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   Plug 'thinca/vim-quickrun'                "@ run
 
   "@--- Language -------
+  Plug 'aklt/plantuml-syntax'               "@ plantuml
   Plug 'brentyi/isort.vim'                  "@ isort
   Plug 'dylon/vim-antlr'                    "@ ANTLR
   Plug 'google/yapf', {
