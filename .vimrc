@@ -348,6 +348,9 @@ autocmd BufNewFile,BufRead *.gitconfig*  set filetype=gitconfig
 autocmd BufNewFile,BufRead *.service  set filetype=systemd
 autocmd BufNewFile,BufRead *.*shrc*  set filetype=zsh
 
+"@ lazygit
+nnoremap <Leader>g :tab ter ++close env LANG=en lazygit<CR>
+
 "@ netrw
 let g:netrw_liststyle=3 " tree
 let g:netrw_sizestyle="H" " (K, M, G)
