@@ -25,9 +25,14 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
         \'dir': '~/.fzf',
         \'do': './install --all' }          "@ search
   Plug 'junegunn/fzf.vim'                   "@ search
+  if (v:version >= 801)
+    Plug 'markonm/traces.vim'               "@ regex
+  endif
+  Plug 'mattn/vim-maketable'                "@ markdown table
   Plug 'mechatroner/rainbow_csv'            "@ csv
   Plug 'nelstrom/vim-visual-star-search'
   Plug 'ntpeters/vim-better-whitespace'     "@ whitespace
+  Plug 'previm/previm'                      "@ markdown
   Plug 'rstacruz/sparkup', {'rtp:': 'vim/'} "@ path
   Plug 'Shougo/vimproc.vim',{
         \'do' : 'make' }                    "@ asynch for vim-quickrun
@@ -266,6 +271,8 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   "@ syntastic
   let g:syntastic_cpp_compiler = 'clang++'
   let g:syntastic_cpp_compiler_options = ' -std=c++14 -stdlib=libc++'
+  "@ markdown
+  let g:previm_open_cmd = 'open -a Safari'
 endif "~/.vim/autoload/plug.vim
 "@--- Plugin settings end ---------------------------
 "@--- Plugin manager end -----------------------------------
