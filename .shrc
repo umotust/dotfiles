@@ -40,34 +40,40 @@ esac
 export HISTSIZE=1000
 
 # eza
-if command -v eza &> /dev/null; then
-  export EXA_COLORS='da=38;5;045:uu=38;5;120'
-  alias le='eza -l'
-  alias tre='eza --tree -I "*.pyc|__pycache__|pyu.egg-info"'
-fi
+function _setup_exa() {
+  if command -v eza &> /dev/null; then
+    export EXA_COLORS='da=38;5;045:uu=38;5;120'
+    alias le='eza -l'
+    alias tre='eza --tree -I "*.pyc|__pycache__|pyu.egg-info"'
+  fi
+}
+_setup_exa
 
 # fzf
-if command -v fzf &> /dev/null; then
-  readonly COMMON_OPTS='-I --hidden --follow \
-    --exclude .git \
-    --exclude .pytest_cache \
-    --exclude .venv \
-    --exclude __pycache__ \
-    --exclude build \
-    --exclude "*.egg-info" \
-    '
-  if command -v fd &> /dev/null; then
-    export FZF_DEFAULT_COMMAND="fd --type f ${COMMON_OPTS}"
-    export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
-    export FZF_ALT_C_COMMAND="fd --type d ${COMMON_OPTS}"
-  fi
+function _setup_fzf() {
+  if command -v fzf &> /dev/null; then
+    readonly COMMON_OPTS='-I --hidden --follow \
+      --exclude .git \
+      --exclude .pytest_cache \
+      --exclude .venv \
+      --exclude __pycache__ \
+      --exclude build \
+      --exclude "*.egg-info" \
+      '
+    if command -v fd &> /dev/null; then
+      export FZF_DEFAULT_COMMAND="fd --type f ${COMMON_OPTS}"
+      export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+      export FZF_ALT_C_COMMAND="fd --type d ${COMMON_OPTS}"
+    fi
 
-  export FZF_CTRL_R_OPTS="
-    --preview 'echo {}' --preview-window up:3:hidden:wrap
-    --bind 'ctrl-/:toggle-preview'"
-  export FZF_CTRL_T_OPTS="
-    --preview 'bat -n --color=always {}'
-    --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-  export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
-fi
+    export FZF_CTRL_R_OPTS="
+      --preview 'echo {}' --preview-window up:3:hidden:wrap
+      --bind 'ctrl-/:toggle-preview'"
+    export FZF_CTRL_T_OPTS="
+      --preview 'bat -n --color=always {}'
+      --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+    export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
+  fi
+}
+_setup_fzf
 
