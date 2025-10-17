@@ -355,6 +355,9 @@ autocmd BufNewFile,BufRead *.gitconfig*  set filetype=gitconfig
 autocmd BufNewFile,BufRead *.service  set filetype=systemd
 autocmd BufNewFile,BufRead *.*shrc*  set filetype=zsh
 
+"@ terminal
+nnoremap <Leader>t :term<CR>
+
 "@ lazygit
 if executable("lazygit")
   nnoremap <Leader>g :tab ter ++close env LANG=en lazygit<CR>
