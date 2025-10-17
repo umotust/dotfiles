@@ -356,7 +356,9 @@ autocmd BufNewFile,BufRead *.service  set filetype=systemd
 autocmd BufNewFile,BufRead *.*shrc*  set filetype=zsh
 
 "@ lazygit
-nnoremap <Leader>g :tab ter ++close env LANG=en lazygit<CR>
+if executable("lazygit")
+  nnoremap <Leader>g :tab ter ++close env LANG=en lazygit<CR>
+endif
 
 "@ netrw
 let g:netrw_liststyle=3 " tree
