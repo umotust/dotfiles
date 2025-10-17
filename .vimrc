@@ -356,7 +356,9 @@ autocmd BufNewFile,BufRead *.service  set filetype=systemd
 autocmd BufNewFile,BufRead *.*shrc*  set filetype=zsh
 
 "@ terminal
-nnoremap <Leader>t :term<CR>
+if (v:version >= 801)
+  nnoremap <Leader>t :term<CR>
+endif
 
 "@ lazygit
 if executable("lazygit")
