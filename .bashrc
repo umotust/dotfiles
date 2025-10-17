@@ -58,15 +58,6 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-# set the default prompt
-if [ "$color_prompt" = yes ]; then
-  GREEN='\[\033[01;32m\]'
-  BLUE='\[\033[01;34m\]'
-  RESET='\[\033[00m\]'
-  PROMPT_COLOR1=$GREEN
-  PROMPT_COLOR2=$BLUE
-  PROMPT_COLOR_RESET=$RESET
-fi
 # If we have git-prompt, use it to add info to the prompt
 if [ -f /etc/bash_completion.d/git-prompt ]; then
   source /etc/bash_completion.d/git-prompt
@@ -77,7 +68,18 @@ elif [ -f ~/.git-prompt.sh ]; then
 else
   GIT_PROMPT=''
 fi
-PS1='${debian_chroot:+($debian_chroot)}'${PROMPT_COLOR1}'\u@\h'${PROMPT_COLOR_RESET}':'${PROMPT_COLOR2}'\w'${PROMPT_COLOR_RESET}${GIT_PROMPT}'\$ '
+
+if [ "$color_prompt" = yes ]; then
+  GREEN='\[\033[01;32m\]'
+  BLUE='\[\033[01;34m\]'
+  RESET='\[\033[00m\]'
+  PROMPT_COLOR1=$GREEN
+  PROMPT_COLOR2=$BLUE
+  PROMPT_COLOR_RESET=$RESET
+  PS1='${debian_chroot:+($debian_chroot)}'${PROMPT_COLOR1}'\u@\h'${PROMPT_COLOR_RESET}':'${PROMPT_COLOR2}'\w'${PROMPT_COLOR_RESET}${GIT_PROMPT}'\$ '
+else
+  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
