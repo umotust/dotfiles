@@ -87,13 +87,13 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   xnoremap [fzf] <Nop>
   xmap ,f [fzf]
   nnoremap <silent> [fzf]G :<C-u>SearchWord<CR>
-  xnoremap <silent> [fzf]G :<C-u>SearchWord<CR>
+  xnoremap <silent> [fzf]G :<C-u>call setreg('z', GetVisualSelection())<CR>:SearchWord<CR>
   if executable('rg')
     nnoremap <silent> [fzf]g :<C-u>Rg<CR>
     command! -bang -nargs=? SearchWord
       \ call fzf#vim#grep(
       \   'rg --column --line-number --no-heading --color=always --smart-case -- .',
-      \   fzf#vim#with_preview({'options': '--query=' . s:GetSearchWord()}),
+      \   fzf#vim#with_preview({'options': '--query=' . GetSearchWord()}),
       \   <bang>0)
   else
     nnoremap <silent> [fzf]g :<C-u>FzfGrepFallback<CR>
@@ -105,16 +105,20 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
     command! -bang -nargs=? SearchWord
       \ call fzf#vim#grep(
       \   'grep -rnI .',
-      \   fzf#vim#with_preview({'options': '--query=' . s:GetSearchWord()}),
+      \   fzf#vim#with_preview({'options': '--query=' . GetSearchWord()}),
       \   <bang>0)
   endif
-  function! s:GetSearchWord() abort
-    if visualmode() != ''
-      return escape(s:GetVisualSelection(), ' ')
+  function! GetSearchWord() abort
+    " If visual selection was stored, use it
+    let l:sel = getreg('z')
+    if !empty(l:sel)
+      call setreg('z', '')  " Clear after use
+      return shellescape(l:sel, ' ')
     endif
+    " Otherwise, use the word under cursor
     return expand('<cword>')
   endfunction
-  function! s:GetVisualSelection() abort
+  function! GetVisualSelection() abort
     let l:start = getpos("'<")
     let l:end   = getpos("'>")
     let l:lines = getline(l:start[1], l:end[1])
