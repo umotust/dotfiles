@@ -85,52 +85,42 @@ if !empty(glob(expand(g:vim_home . '/autoload/plug.vim')))
   nnoremap <silent> [fzf]t :<C-u>Tags<CR>
   "@ ripgrep
   xnoremap [fzf] <Nop>
-  xmap ,f [fzf]
   nnoremap <silent> [fzf]G :<C-u>SearchWord<CR>
-  xnoremap <silent> [fzf]G :<C-u>call setreg('z', GetVisualSelection())<CR>:SearchWord<CR>
   if executable('rg')
+    function! GetSearchWord() abort
+      " If visual selection was stored, use it
+      let l:sel = getreg('z')
+      if !empty(l:sel)
+        call setreg('z', '')  " Clear after use
+        return shellescape(l:sel, ' ')
+      endif
+      " Otherwise, use the word under cursor
+      return expand('<cword>')
+    endfunction
+
+    function! GetVisualSelection() abort
+      let l:start = getpos("'<")
+      let l:end   = getpos("'>")
+      let l:lines = getline(l:start[1], l:end[1])
+      " If selection is within a single line
+      if len(l:lines) == 1
+        return strpart(l:lines[0], l:start[2]-1, l:end[2]-l:start[2]+1)
+      endif
+      " Multi-line selection
+      let l:lines[0] = strpart(l:lines[0], l:start[2]-1)
+      let l:lines[-1] = strpart(l:lines[-1], 0, l:end[2])
+      return join(l:lines, ' ')
+    endfunction
+
+    xmap ,f [fzf]
+    xnoremap <silent> [fzf]G :<C-u>call setreg('z', GetVisualSelection())<CR>:SearchWord<CR>
     nnoremap <silent> [fzf]g :<C-u>Rg<CR>
     command! -bang -nargs=? SearchWord
       \ call fzf#vim#grep(
       \   'rg --column --line-number --no-heading --color=always --smart-case -- .',
       \   fzf#vim#with_preview({'options': '--query=' . GetSearchWord()}),
       \   <bang>0)
-  else
-    nnoremap <silent> [fzf]g :<C-u>FzfGrepFallback<CR>
-    command! -bang -nargs=? FzfGrepFallback
-      \ call fzf#vim#grep(
-      \   'grep -rnI .',
-      \   fzf#vim#with_preview({'options': '--query=' . fzf#shellescape(<q-args>)}),
-      \   <bang>0)
-    command! -bang -nargs=? SearchWord
-      \ call fzf#vim#grep(
-      \   'grep -rnI .',
-      \   fzf#vim#with_preview({'options': '--query=' . GetSearchWord()}),
-      \   <bang>0)
   endif
-  function! GetSearchWord() abort
-    " If visual selection was stored, use it
-    let l:sel = getreg('z')
-    if !empty(l:sel)
-      call setreg('z', '')  " Clear after use
-      return shellescape(l:sel, ' ')
-    endif
-    " Otherwise, use the word under cursor
-    return expand('<cword>')
-  endfunction
-  function! GetVisualSelection() abort
-    let l:start = getpos("'<")
-    let l:end   = getpos("'>")
-    let l:lines = getline(l:start[1], l:end[1])
-    " If selection is within a single line
-    if len(l:lines) == 1
-      return strpart(l:lines[0], l:start[2]-1, l:end[2]-l:start[2]+1)
-    endif
-    " Multi-line selection
-    let l:lines[0] = strpart(l:lines[0], l:start[2]-1)
-    let l:lines[-1] = strpart(l:lines[-1], 0, l:end[2])
-    return join(l:lines, ' ')
-  endfunction
   "@ whitespace
   let g:strip_whitespace_on_save = 1
   let g:strip_whitespace_confirm = 0
