@@ -48,3 +48,10 @@ for file in "${FILES[@]}"; do
 
   ln ${LN_OPTS} "$file" "$TARGET"
 done
+
+# NeoVim
+if [ -e $XDG_CONFIG_HOME ]; then
+  ln ${LN_OPTS} $SCRIPT_DIR/init.lua $XDG_CONFIG_HOME/nvim/
+else
+  ln ${LN_OPTS} $SCRIPT_DIR/init.lua ~/.config/nvim/
+fi
