@@ -15,7 +15,7 @@ vim.cmd([[
   highlight! NonText ctermbg=NONE guibg=NONE
   highlight! LineNr ctermbg=NONE guibg=NONE
 ]])
--- Tab/Intent
+-- Tab/Indent
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
@@ -62,7 +62,6 @@ local plugins = {
   -- UI / Theme
   { "cocopon/iceberg.vim" },
   { "vim-airline/vim-airline" },
-  { "airblade/vim-gitgutter" },
 
   -- Movement / Editing
   { "easymotion/vim-easymotion" },
@@ -208,7 +207,6 @@ if vim.fn.executable("rg") == 1 then
   end, { bang = true, nargs = "?" })
 
   vim.keymap.set("n", ",fG", ":SearchWord<CR>", { silent = true, desc = "Search current word (rg)" })
-  vim.keymap.set("x", ",fG", "<Esc>:<C-u>SearchWord<CR>", { silent = true, desc = "Search visual selection (rg)" })
 end
 
 -- Easymotion settings
@@ -235,7 +233,6 @@ vim.keymap.set("x", "<space>M", "<Plug>(quickhl-manual-reset)", { remap = true }
 -- Whitespace cleanup
 vim.g.strip_whitespace_on_save = 1
 vim.g.strip_whitespace_confirm = 0
-
 
 -- Local configurations
 local local_init = vim.fn.stdpath("config") .. "/init.local.lua"
