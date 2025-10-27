@@ -11,11 +11,6 @@ vim.opt.display = "lastline"
 vim.opt.updatetime = 1000
 -- Color
 vim.opt.termguicolors = true
-vim.cmd([[
-  highlight! Normal ctermbg=NONE guibg=NONE
-  highlight! NonText ctermbg=NONE guibg=NONE
-  highlight! LineNr ctermbg=NONE guibg=NONE
-]])
 -- Tab/Indent
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
