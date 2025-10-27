@@ -8,6 +8,7 @@ vim.opt.laststatus = 2
 vim.opt.title = true
 vim.opt.showcmd = true
 vim.opt.display = "lastline"
+vim.opt.updatetime = 1000
 -- Color
 vim.opt.termguicolors = true
 vim.cmd([[
@@ -153,6 +154,28 @@ vim.cmd("colorscheme iceberg")
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "LSP: [G]oto [D]efinition" })
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "LSP: [G]oto [D]eclaration" })
 vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "LSP: [G]oto [R]eference" })
+
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 })
+
+    if #diagnostics > 0 then
+      table.sort(diagnostics, function(a, b)
+        return a.severity < b.severity
+      end)
+      local diag = diagnostics[1]
+
+      local msg = string.format("[%s] %s",
+        vim.diagnostic.severity[diag.severity],
+        diag.message:gsub("\n", " ")
+      )
+
+      vim.api.nvim_echo({ { msg, "WarningMsg" } }, false, {})
+    else
+      vim.api.nvim_echo({}, false, {})
+    end
+  end,
+})
 
 -- Treesitter: syntax highlighting
 require("nvim-treesitter.configs").setup({
