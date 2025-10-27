@@ -185,7 +185,7 @@ require("nvim-treesitter.configs").setup({
 
 -- Gitsigns: git diff indicators
 require("gitsigns").setup({
-  update_debounce = 200,
+  update_debounce = 1000,
 })
 
 -- LSP and completion setup
