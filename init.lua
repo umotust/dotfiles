@@ -194,6 +194,12 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
+-- overseer
+local lua_path = vim.fn.stdpath('config') .. '/lua/?.lua;'
+package.path = lua_path .. package.path
+require('overseer').setup()
+require('tasks')
+
 -- Treesitter: syntax highlighting
 require("nvim-treesitter.configs").setup({
   highlight = { enable = true },
