@@ -48,6 +48,23 @@ vim.keymap.set("n", "<PageDown>", "<C-w>+")
 vim.keymap.set("n", "<PageUp>", "<C-w>-")
 vim.keymap.set("n", "<End>", "<C-w>>")
 vim.keymap.set("n", "<ESC><ESC>", ":nohlsearch<CR>", { silent = true })
+vim.keymap.set('n', '<Leader>q', function()
+  local qf_win = vim.fn.getqflist({winid = 0}).winid
+  if qf_win ~= 0 then
+    vim.cmd('cclose')
+  end
+
+  local loc_win = vim.fn.getloclist(0, {winid = 0}).winid
+  if loc_win ~= 0 then
+    vim.cmd('lclose')
+  end
+
+  local quickrun_buf = vim.fn.bufwinnr('quickrun://output')
+  if quickrun_buf ~= -1 then
+    vim.api.nvim_buf_delete(vim.fn.bufnr('quickrun://output'), {force = true})
+  end
+end, {silent = true, noremap = true})
+
 
 -- Lazy.nvim setup (Plugin manager)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
