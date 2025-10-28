@@ -190,10 +190,13 @@ vim.api.nvim_create_autocmd("CursorHold", {
 })
 
 -- overseer
-local lua_path = vim.fn.stdpath("config") .. "/lua/?.lua;"
-package.path = lua_path .. package.path
-require("overseer").setup()
-pcall(require, "tasks")
+require("overseer").setup({
+  templates = { "builtin", "user.quickrun" }
+})
+vim.keymap.set("n", "<leader>R", ":OverseerToggle<CR>")
+vim.keymap.set("n", "<leader>r", function()
+  require("overseer").run_template({ name = "quickrun_" .. vim.bo.filetype })
+end, { desc = "QuickRun current file" })
 
 -- Treesitter: syntax highlighting
 require("nvim-treesitter.configs").setup({
