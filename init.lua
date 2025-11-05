@@ -59,7 +59,7 @@ vim.keymap.set('n', '<Leader>q', function()
     vim.api.nvim_buf_delete(vim.fn.bufnr('quickrun://output'), {force = true})
   end
 end, {silent = true, noremap = true})
-
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
 
 -- Lazy.nvim setup (Plugin manager)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -224,8 +224,9 @@ cmp.setup({
 })
 
 -- Search
-vim.keymap.set("n", ",ff", ":<C-u>Files<CR>")
 vim.keymap.set("n", ",fb", ":<C-u>Buffers<CR>")
+vim.keymap.set("n", ",fc", ":<C-u>Commands<CR>")
+vim.keymap.set("n", ",ff", ":<C-u>Files<CR>")
 vim.keymap.set("n", ",fh", ":<C-u>History<CR>")
 vim.keymap.set("n", ",fl", ":<C-u>Lines<CR>")
 vim.keymap.set("n", ",ft", ":<C-u>Tags<CR>")
