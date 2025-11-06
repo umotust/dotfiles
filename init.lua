@@ -107,12 +107,13 @@ local plugins = {
   {
     "junegunn/fzf.vim",
     keys = {
-      { ",fb", ":Buffers<CR>", mode = "n"},
-      { ",fc", ":Commands<CR>", mode = "n"},
-      { ",ff", ":Files<CR>",  mode = "n"},
-      { ",fh", ":History<CR>", mode = "n"},
-      { ",fl", ":Lines<CR>",  mode = "n"},
-      { ",ft", ":Tags<CR>",   mode = "n"},
+      { ",fb", ":Buffers<CR>", mode = "n" },
+      { ",fc", ":Commands<CR>", mode = "n" },
+      { ",ff", ":Files<CR>",  mode = "n" },
+      { ",fh", ":History<CR>", mode = "n" },
+      { ",fl", ":Lines<CR>",  mode = "n" },
+      { ",ft", ":Tags<CR>",   mode = "n" },
+      { ",fg", ":Rg<CR>", mode = "n" },
     }
   },
 
@@ -256,7 +257,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
 
 -- Search using rg + fzf
 if vim.fn.executable("rg") == 1 then
-  vim.keymap.set("n", ",fg", ":Rg<CR>", { silent = true })
   vim.api.nvim_create_user_command("SearchWord", function()
     local q = vim.fn.expand("<cword>")
     vim.fn["fzf#vim#grep"](
