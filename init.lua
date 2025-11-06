@@ -195,6 +195,7 @@ local plugins = {
   -- Task runner
   {
     "stevearc/overseer.nvim",
+    version = "v1.6.0",
     cmd = { "OverseerToggle", "OverseerRun" },
     keys = {
       { "<leader>R", "<cmd>OverseerToggle<CR>", desc = "Toggle Overseer" },
