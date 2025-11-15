@@ -114,6 +114,9 @@ local plugins = {
       { ",fl", ":Lines<CR>",  mode = "n" },
       { ",ft", ":Tags<CR>",   mode = "n" },
       { ",fg", ":Rg<CR>", mode = "n" },
+      { ",fG", ":SearchWord<CR>", mode = "n",
+        { silent = true, desc = "Search current word (rg)" }
+      }
     }
   },
 
@@ -139,7 +142,7 @@ local plugins = {
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
-      },
+    },
   },
   {
     "hrsh7th/nvim-cmp",
@@ -266,7 +269,6 @@ if vim.fn.executable("rg") == 1 then
       0
     )
   end, {})
-  vim.keymap.set("n", ",fG", ":SearchWord<CR>", { silent = true, desc = "Search current word (rg)" })
 end
 
 -- Terminal
