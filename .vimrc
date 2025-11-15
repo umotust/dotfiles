@@ -350,7 +350,7 @@ autocmd BufNewFile,BufRead *.service  set filetype=systemd
 autocmd BufNewFile,BufRead *.*shrc*  set filetype=zsh
 
 "@ terminal
-if (v:version >= 801)
+if (v:version >= 800)
   nnoremap <Leader>t :term<CR>
 endif
 
