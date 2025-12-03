@@ -98,6 +98,11 @@ local plugins = {
       vim.g.strip_whitespace_on_save = 1
       vim.g.strip_whitespace_confirm = 0
     end,
+    config = function()
+      vim.schedule(function()
+        vim.cmd("EnableWhitespace")
+      end)
+    end,
   },
   { "tpope/vim-surround", event = "VeryLazy" },
   { "tpope/vim-commentary", event = "VeryLazy" },
@@ -187,7 +192,7 @@ local plugins = {
       require("gitsigns").setup({ update_debounce = 1000 })
     end,
   },
-  { "tpope/vim-fugitive", cmd = "Git" },
+  { "tpope/vim-fugitive", event = "VeryLazy" },
   {
     "kdheepak/lazygit.nvim",
     cmd = "LazyGit",
