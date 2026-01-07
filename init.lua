@@ -64,6 +64,39 @@ vim.keymap.set('n', '<Leader>q', function()
 end, { silent = true, noremap = true })
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
 
+-- Binary file handling
+vim.api.nvim_create_augroup("Binary", { clear = true })
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = "Binary",
+  callback = function()
+    if vim.opt_local.binary:get() then
+      vim.cmd("%!xxd")
+      vim.opt_local.filetype = "xxd"
+      vim.opt_local.modifiable = true
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = "Binary",
+  callback = function()
+    if vim.opt_local.binary:get() then
+      vim.cmd("%!xxd -r")
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+  group = "Binary",
+  callback = function()
+    if vim.opt_local.binary:get() then
+      vim.cmd("%!xxd")
+      vim.opt_local.modified = false
+    end
+  end,
+})
+
 -- Lazy.nvim setup
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
