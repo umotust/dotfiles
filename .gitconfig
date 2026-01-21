@@ -24,6 +24,7 @@
   cp = cherry-pick
   df = diff --ws-error-highlight=all
   dfc = df --cached
+  dfi = df --ignore-space-at-eol
   dfno = df --name-only
   fc = fetch
   rs = reset --soft
