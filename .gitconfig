@@ -35,6 +35,7 @@
   ss = stash save
   ssh = "!f(){ git stash show $2 stash@{$1};};f"
   st = status
+  stu = status -uno
   rH = reset HEAD
 [core]
   editor = vim
