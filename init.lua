@@ -188,13 +188,54 @@ local plugins = {
     dependencies = { "hrsh7th/cmp-nvim-lsp" },
     config = function()
       local cmp = require("cmp")
+
       cmp.setup({
-        mapping = cmp.mapping.preset.insert({
-          ["<Tab>"] = cmp.mapping.select_next_item(),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-        }),
-        sources = { { name = "nvim_lsp" }, { name = "buffer" } },
+        mapping = {
+          ["<C-n>"] = function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            else
+              fallback() -- Fallback to built-in Vim <C-n> completion
+            end
+          end,
+
+          ["<C-p>"] = function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            else
+              fallback() -- Fallback to built-in Vim <C-p> completion
+            end
+          end,
+
+          ["<Tab>"] = function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            else
+              fallback() -- Fallback to normal Tab behavior (indent, etc.)
+            end
+          end,
+
+          ["<S-Tab>"] = function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            else
+              fallback() -- Fallback to default Shift-Tab behavior
+            end
+          end,
+
+          ["<CR>"] = function(fallback)
+            if cmp.visible() then
+              cmp.confirm({ select = true })
+            else
+              fallback() -- Fallback to normal Enter behavior
+            end
+          end,
+        },
+
+        sources = {
+          { name = "nvim_lsp" }, -- LSP completion source
+          { name = "buffer" },   -- Buffer words completion source
+        },
       })
     end,
   },
