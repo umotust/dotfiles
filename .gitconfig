@@ -37,6 +37,9 @@
   st = status
   stu = status -uno
   rH = reset HEAD
+  wt = worktree
+  wta = worktree add
+  wtl = worktree list
 [core]
   editor = vim
   excludesfile = ~/.gitignore
