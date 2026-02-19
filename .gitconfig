@@ -27,6 +27,7 @@
   dfi = df --ignore-space-at-eol
   dfno = df --name-only
   fc = fetch
+  rH = reset HEAD
   rs = reset --soft
   rv = revert
   rvne = revert --no-edit
@@ -36,7 +37,6 @@
   ssh = "!f(){ git stash show $2 stash@{$1};};f"
   st = status
   stu = status -uno
-  rH = reset HEAD
   wt = worktree
   wta = worktree add
   wtl = worktree list
