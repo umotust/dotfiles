@@ -12,42 +12,14 @@ else
 fi
 
 # Alias
-alias dates='date +%Y%m%d_%H%M%S'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
-alias hist='history'
-alias hista='history -E 1'
-alias l='ls -CF'
-alias l1='ls -1'
 alias la='ls -A'
 alias ll='ls -alF'
-alias g="git"
-case $(uname) in
-  Darwin)
-    alias ldd='otool -L'
-    alias lscpu='sysctl -a machdep.cpu'
-    alias lshw='system_profiler'
-    alias lsblk='diskutil list'
-    alias lsmod='kextstat'
-    alias lsusb='system_profiler SPUSBDataType'
-    ;;
-  Linux)
-    ;;
-esac
 
 # History
 export HISTSIZE=1000
-
-# eza
-function _setup_exa() {
-  if command -v eza &> /dev/null; then
-    export EXA_COLORS='da=38;5;045:uu=38;5;120'
-    alias le='eza -l'
-    alias tre='eza --tree -I "*.pyc|__pycache__|pyu.egg-info"'
-  fi
-}
-_setup_exa
 
 # fzf
 function _setup_fzf() {

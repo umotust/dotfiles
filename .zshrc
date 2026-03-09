@@ -10,6 +10,7 @@ if [ -e ~/.zinit/bin/zinit.zsh ]; then
   zinit light zsh-users/zsh-autosuggestions
   zinit light zsh-users/zsh-completions
   zinit light chrissicool/zsh-256color
+  zinit light olets/zsh-abbr
 
   # plugin settings
   # zsh-syntax-highlighting
@@ -51,7 +52,7 @@ precmd_functions+=( precmd_vcs_info )
 zstyle ':vcs_info:git:*' formats '%F{039}%b%f' # Use any powerline font such as 'Ricty for Powerline'.
 zstyle ':vcs_info:*' actionformats '[%F{039}%b%f|%a]'
 
-# alias
+# ls color
 export LSCOLORS=gxfxcxdxbxegedabagacad
 # Prompt
 setopt PROMPT_SUBST
@@ -59,6 +60,7 @@ setopt PROMPT_SUBST
 PROMPT="\$vcs_info_msg_0_:%F{050}%~%f❯ "
 
 [ -f ~/.functions.sh ] && source ~/.functions.sh
+[ -f ~/.aliases ] && source ~/.aliases
 [ -f ~/.completions.zsh ] && source ~/.completions.zsh
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
