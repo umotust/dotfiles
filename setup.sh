@@ -17,6 +17,7 @@ esac
 # List of files/patterns to exclude from linking
 EXCLUDES=(
   ".DS_Store"
+  ".gitignore"
   ".pre-commit-config.yaml"
   ".secrets.baseline"
   "*.swp"
@@ -24,6 +25,23 @@ EXCLUDES=(
 
 # Initialize the array for symlink target pairs
 TARGETS=()
+
+# abbr
+echo "Generating .abbrs from .aliases..."
+ABBR_FILE="${SCRIPT_DIR}/.abbrs"
+echo "# Auto-generated from .aliases on $(date)" > "$ABBR_FILE"
+echo "if [ ! -s \$HOME/.config/zsh-abbr/user-abbreviations ]; then" >> "$ABBR_FILE"
+echo "abbr --quiet -g g=git" >> "$ABBR_FILE"
+echo "abbr --quiet import-git-aliases -g --prefix 'git '" >> "$ABBR_FILE"
+awk '
+/^[[:space:]]*#/ {next}
+/^[[:space:]]*alias[[:space:]]+/ {
+  sub(/^[[:space:]]*alias[[:space:]]+/, "")
+  split($0, a, "=")
+  print "abbr " a[1] "=" a[2]
+}
+' "${SCRIPT_DIR}/.aliases" >> "$ABBR_FILE"
+echo "fi" >> "$ABBR_FILE"
 
 # Process dotfiles in the script directory
 for file in "${SCRIPT_DIR}"/.*; do

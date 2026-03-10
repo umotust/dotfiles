@@ -17,6 +17,7 @@ alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 alias la='ls -A'
 alias ll='ls -alF'
+[ -f ~/.aliases ] && source ~/.aliases
 
 # History
 export HISTSIZE=1000

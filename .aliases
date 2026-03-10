@@ -1,27 +1,18 @@
-# If zsh is being used, then ALIAS is abbr, otherwise alias
-if [ -n "$ZSH_VERSION" ]; then
-  abbr --quiet -g g=git
-  abbr --quiet import-git-aliases -g --prefix "git "
-  ALIAS() { alias "$@"; abbr --quiet "$@"; }
-else
-  ALIAS() { alias "$@"; }
-fi
-
-ALIAS dates='date +%Y%m%d_%H%M%S'
-ALIAS hist='history'
-ALIAS hista='history -E 1'
-ALIAS l='ls -CF'
-ALIAS l1='ls -1'
-ALIAS g="git"
+alias dates='date +%Y%m%d_%H%M%S'
+alias hist='history'
+alias hista='history -E 1'
+alias l='ls -CF'
+alias l1='ls -1'
+alias g="git"
 
 case $(uname) in
   Darwin)
-    ALIAS ldd='otool -L'
-    ALIAS lscpu='sysctl -a machdep.cpu'
-    ALIAS lshw='system_profiler'
-    ALIAS lsblk='diskutil list'
-    ALIAS lsmod='kextstat'
-    ALIAS lsusb='system_profiler SPUSBDataType'
+    alias ldd='otool -L'
+    alias lscpu='sysctl -a machdep.cpu'
+    alias lshw='system_profiler'
+    alias lsblk='diskutil list'
+    alias lsmod='kextstat'
+    alias lsusb='system_profiler SPUSBDataType'
     ;;
   Linux)
     ;;
@@ -31,8 +22,8 @@ esac
 function _setup_exa() {
   if command -v eza &> /dev/null; then
     export EXA_COLORS='da=38;5;045:uu=38;5;120'
-    ALIAS le='eza -l'
-    ALIAS tre='eza --tree -I "*.pyc|__pycache__|pyu.egg-info"'
+    alias le='eza -l'
+    alias tre='eza --tree -I "*.pyc|__pycache__|pyu.egg-info"'
   fi
 }
 _setup_exa

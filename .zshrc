@@ -60,7 +60,7 @@ setopt PROMPT_SUBST
 PROMPT="\$vcs_info_msg_0_:%F{050}%~%f❯ "
 
 [ -f ~/.functions.sh ] && source ~/.functions.sh
-[ -f ~/.aliases ] && source ~/.aliases
+[ -f ~/.abbrs ] && source ~/.abbrs
 [ -f ~/.completions.zsh ] && source ~/.completions.zsh
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 

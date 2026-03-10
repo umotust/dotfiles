@@ -107,7 +107,6 @@ if ! shopt -oq posix; then
 fi
 
 [ -f ~/.functions.sh ] && source ~/.functions.sh
-[ -f ~/.aliases ] && source ~/.aliases
 [ -f ~/.completions.bash ] && source ~/.completions.bash
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local
 
