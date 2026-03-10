@@ -28,6 +28,7 @@ autoload -U +X bashcompinit && bashcompinit
 zstyle ':completion:*:default' menu select=1
 zstyle ':completion::complete:*' use-cache true
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
 bindkey "^P" history-beginning-search-backward
 bindkey "^N" history-beginning-search-forward
 
