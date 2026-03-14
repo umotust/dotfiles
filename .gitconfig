@@ -27,6 +27,7 @@
   dfi = df --ignore-space-at-eol
   dfno = df --name-only
   fc = fetch
+  ls = ls-files
   rH = reset HEAD
   rs = reset --soft
   rv = revert
