@@ -29,8 +29,9 @@ TARGETS=()
 # abbr
 echo "Generating .abbrs from .aliases..."
 ABBR_FILE="${SCRIPT_DIR}/.abbrs"
+USER_ABBR_FILE="$HOME/.config/zsh-abbr/user-abbreviations"
 echo "# Auto-generated from .aliases on $(date)" > "$ABBR_FILE"
-echo "if [ ! -s \$HOME/.config/zsh-abbr/user-abbreviations ]; then" >> "$ABBR_FILE"
+echo "if [ ! -s \"$USER_ABBR_FILE\" ]; then" >> "$ABBR_FILE"
 echo "abbr --quiet -g g=git" >> "$ABBR_FILE"
 echo "abbr --quiet import-git-aliases -g --prefix 'git '" >> "$ABBR_FILE"
 awk '
@@ -42,6 +43,8 @@ awk '
 }
 ' "${SCRIPT_DIR}/.aliases" >> "$ABBR_FILE"
 echo "fi" >> "$ABBR_FILE"
+# Remove existing user-abbreviations file to ensure .abbrs is used
+rm -f "$USER_ABBR_FILE"
 
 # Process dotfiles in the script directory
 for file in "${SCRIPT_DIR}"/.*; do
