@@ -1,9 +1,10 @@
 alias dates='date +%Y%m%d_%H%M%S'
+alias g="git"
 alias hist='history'
 alias hista='history -E 1'
 alias l='ls -CF'
 alias l1='ls -1'
-alias g="git"
+alias oc='openclaw'
 
 case $(uname) in
   Darwin)
