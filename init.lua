@@ -64,6 +64,13 @@ vim.keymap.set('n', '<Leader>q', function()
 end, { silent = true, noremap = true })
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
 
+-- Filetype associations
+vim.filetype.add({
+  extension = {
+    aliases = "bash"
+  },
+})
+
 -- Binary file handling
 vim.api.nvim_create_augroup("Binary", { clear = true })
 
