@@ -104,6 +104,10 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
 })
 
+-- Version checks (vim.fn.has("nvim-X.Y") returns 1 if version >= X.Y)
+local nvim_ge_010 = vim.fn.has("nvim-0.10") == 1
+local nvim_ge_011 = vim.fn.has("nvim-0.11") == 1
+
 -- Lazy.nvim setup
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -171,23 +175,35 @@ local plugins = {
   { "hrsh7th/cmp-nvim-lsp", event = "VeryLazy" },
   { "mason-org/mason-lspconfig.nvim",
     event = "VeryLazy",
-    opts = {
-      ensure_installed = {
-        "bashls",
-        "clangd",
-        "cmake",
-        "docker_language_server",
-        'docker_compose_language_service',
-        'jsonls',
-        'lua_ls',
-        "pyright"
-      }
-
-    },
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
     },
+    config = function()
+      require("mason-lspconfig").setup({
+        automatic_enable = nvim_ge_011,
+        ensure_installed = {
+          "bashls",
+          "clangd",
+          "docker_language_server",
+          "docker_compose_language_service",
+          "jsonls",
+          "lua_ls",
+          "pyright",
+        },
+      })
+      -- Neovim < 0.11: vim.lsp.enable is unavailable, set up servers manually
+      if not nvim_ge_011 then
+        local ok, mason_lspconfig = pcall(require, "mason-lspconfig")
+        if ok and mason_lspconfig.setup_handlers then
+          mason_lspconfig.setup_handlers({
+            function(server_name)
+              require("lspconfig")[server_name].setup({})
+            end,
+          })
+        end
+      end
+    end,
   },
   {
     "hrsh7th/nvim-cmp",
@@ -251,10 +267,14 @@ local plugins = {
     event = { "BufReadPost", "BufNewFile" },
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        highlight = { enable = true },
-        indent = { enable = true },
-      })
+      if nvim_ge_010 then
+        require("nvim-treesitter").setup()
+      else
+        local ok, configs = pcall(require, "nvim-treesitter.configs")
+        if ok then
+          configs.setup({ highlight = { enable = true }, indent = { enable = true } })
+        end
+      end
     end,
   },
   {
