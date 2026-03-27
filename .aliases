@@ -4,7 +4,6 @@ alias hist='history'
 alias hista='history -E 1'
 alias l='ls -CF'
 alias l1='ls -1'
-alias oc='openclaw'
 
 case $(uname) in
   Darwin)
