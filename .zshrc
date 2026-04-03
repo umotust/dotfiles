@@ -27,14 +27,13 @@ autoload -U compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 zstyle ':completion:*:default' menu select=1
 zstyle ':completion::complete:*' use-cache true
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'r:|=*' 'l:|=* r:|=*'
 bindkey "^P" history-beginning-search-backward
 bindkey "^N" history-beginning-search-forward
 
 # color
 if [ -e /etc/DIR_COLORS ]; then
-  eval `dircolors /etc/DIR_COLORS`
+  eval "$(dircolors /etc/DIR_COLORS)"
 fi
 autoload -U colors && colors
 zstyle ':completion:*' list-colors "${LS_COLORS}"

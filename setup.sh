@@ -1,8 +1,8 @@
 #!/bin/bash
+set -euo pipefail
 
 # Get the directory where this script resides
 SCRIPT_DIR=$(cd "$(dirname "$0")" || exit; pwd)
-# shellcheck disable=SC2128
 
 # Set symlink options depending on the OS
 case $(uname) in
@@ -11,6 +11,9 @@ case $(uname) in
     ;;
   Linux)
     LN_OPTS="-sv --backup=numbered"
+    ;;
+  *)
+    LN_OPTS="-sv"
     ;;
 esac
 
@@ -30,6 +33,7 @@ TARGETS=()
 echo "Generating .abbrs from .aliases..."
 ABBR_FILE="${SCRIPT_DIR}/.abbrs"
 USER_ABBR_FILE="$HOME/.config/zsh-abbr/user-abbreviations"
+# shellcheck disable=SC2128
 echo "# Auto-generated from .aliases on $(date)" > "$ABBR_FILE"
 echo "if [ ! -s \"$USER_ABBR_FILE\" ]; then" >> "$ABBR_FILE"
 echo "abbr --quiet -g g=git" >> "$ABBR_FILE"

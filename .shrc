@@ -25,7 +25,7 @@ export HISTSIZE=1000
 # fzf
 function _setup_fzf() {
   if command -v fzf &> /dev/null; then
-    readonly COMMON_OPTS='-I --hidden --follow \
+    local COMMON_OPTS='-I --hidden --follow \
       --exclude .git \
       --exclude .pytest_cache \
       --exclude .venv \

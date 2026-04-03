@@ -11,6 +11,7 @@ vim.opt.title = true
 vim.opt.showcmd = true
 vim.opt.display = "lastline"
 vim.opt.updatetime = 1000
+vim.opt.signcolumn = "yes"
 vim.opt.termguicolors = true
 
 -- Indent / Tab
@@ -110,7 +111,7 @@ local nvim_ge_011 = vim.fn.has("nvim-0.11") == 1
 
 -- Lazy.nvim setup
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
     "git", "clone", "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath
@@ -163,9 +164,7 @@ local plugins = {
       { ",fl", ":Lines<CR>",  mode = "n" },
       { ",ft", ":Tags<CR>",   mode = "n" },
       { ",fg", ":Rg<CR>", mode = "n" },
-      { ",fG", ":SearchWord<CR>", mode = "n",
-        { silent = true, desc = "Search current word (rg)" }
-      }
+      { ",fG", ":SearchWord<CR>", mode = "n", silent = true, desc = "Search current word (rg)" }
     }
   },
 

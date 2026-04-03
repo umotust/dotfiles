@@ -1,14 +1,16 @@
 function bm() {
-  local URL=$(${DEVEL_PATH}/python/parse_plist_bookmark.py \
+  local URL
+  URL=$(${DEVEL_PATH}/python/parse_plist_bookmark.py \
     | fzf \
     | ggrep -Eo "\"http.*\"" \
     | sed 's/"//g')
-  [ -z $URL ] && return || open $URL
+  [ -z "$URL" ] && return || open "$URL"
 }
 
 # TODO: query
 function his() {
-  local URL=$(sqlite3 ~/Library/Safari/History.db < <(echo \
+  local URL
+  URL=$(sqlite3 ~/Library/Safari/History.db < <(echo \
     'select distinct items.visit_count,items.url, visits.title ' \
       'from history_items as items ' \
         'inner join history_visits as visits ' \
@@ -16,7 +18,7 @@ function his() {
         'order by items.visit_count') \
     | sort -n -k1n,1 -k2 \
     | fzf --tac --no-sort)
-  [ -z $URL ] && return || open $URL
+  [ -z "$URL" ] && return || open "$URL"
 }
 
 function cdd() {
@@ -49,8 +51,9 @@ function dsh() {
 }
 
 function sshf() {
+  local HOST
   HOST=$(grep "Host " ~/.ssh/config | awk '{print $2}' | fzf)
-  [ -z $HOST ] && return || bash -cx "ssh ${@} $HOST"
+  [ -z "$HOST" ] && return || bash -cx "ssh ${*} $HOST"
 }
 
 function trw() {

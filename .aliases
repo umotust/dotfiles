@@ -19,12 +19,12 @@ case $(uname) in
 esac
 
 # eza
-function _setup_exa() {
+function _setup_eza() {
   if command -v eza &> /dev/null; then
-    export EXA_COLORS='da=38;5;045:uu=38;5;120'
+    export EZA_COLORS='da=38;5;045:uu=38;5;120'
     alias le='eza -l'
     alias tre='eza --tree -I "*.pyc|__pycache__|pyu.egg-info"'
   fi
 }
-_setup_exa
+_setup_eza
 
