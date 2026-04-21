@@ -65,10 +65,10 @@ for file in "${SCRIPT_DIR}"/.*; do
 done
 
 # Handle NeoVim configuration directory
-if [ -n "$XDG_CONFIG_HOME" ]; then
-  NVIM_HOME="$XDG_CONFIG_HOME/nvim"
+if [ -n "${XDG_CONFIG_HOME:-}" ]; then
+  NVIM_HOME="${XDG_CONFIG_HOME}/nvim"
 else
-  NVIM_HOME="$HOME/.config/nvim"
+  NVIM_HOME="${HOME}/.config/nvim"
 fi
 mkdir -p "$NVIM_HOME"
 
