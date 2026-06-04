@@ -2,8 +2,10 @@
 [ -f ~/.shrc ] && source ~/.shrc
 
 # plugin
-if [ -e ~/.zinit/bin/zinit.zsh ]; then
-  source ~/.zinit/bin/zinit.zsh
+[ -e ~/.zinit/bin/zinit.zsh ] && ZINIT_FILE=~/.zinit/bin/zinit.zsh
+[ -e ~/.local/share/zinit/zinit.git/zinit.zsh ] && ZINIT_FILE=~/.local/share/zinit/zinit.git/zinit.zsh
+if [ -e ${ZINIT_FILE} ]; then
+  source ${ZINIT_FILE}
   autoload -Uz _zinit
   (( ${+_comps} )) && _comps[zinit]=_zinit
   zinit light zsh-users/zsh-syntax-highlighting
