@@ -62,6 +62,13 @@ vim.keymap.set('n', '<Leader>q', function()
   if quickrun_buf ~= -1 then
     vim.api.nvim_buf_delete(vim.fn.bufnr('quickrun://output'), {force = true})
   end
+
+  -- close terminal buffers
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_get_option(buf, "buftype") == "terminal" then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
 end, { silent = true, noremap = true })
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
 
