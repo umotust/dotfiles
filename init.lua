@@ -324,6 +324,35 @@ local plugins = {
       require("overseer").setup({ templates = { "builtin", "user.quickrun" } })
     end,
   },
+  {
+    "umotust/cellrun.nvim",
+    dependencies = {
+      {
+        "Vigemus/iron.nvim",
+        config = function()
+          local view = require("iron.view")
+
+          require("iron.core").setup({
+            config = {
+              scratch_repl = true,
+
+              repl_open_cmd = view.split.vertical.botright(function()
+                  return math.floor(vim.o.columns * 0.5)
+              end),
+
+              repl_definition = {
+                python = {
+                  command = function()
+                    return { "python", "-m", "IPython", "--no-autoindent" }
+                  end,
+                },
+              }, -- repl_definition
+            }, -- config
+          }) -- setup
+        end,
+      },
+    }, -- dependencies
+  },
 }
 
 -- Merge local plugin settings if available
