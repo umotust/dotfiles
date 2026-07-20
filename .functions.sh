@@ -1,7 +1,7 @@
 function bm() {
   local URL
   URL=$(${DEVEL_PATH}/python/parse_plist_bookmark.py \
-    | fzf \
+    | fzf --no-sort --ansi --header="category title url" \
     | ggrep -Eo "\"http.*\"" \
     | sed 's/"//g')
   [ -z "$URL" ] && return || open "$URL"
@@ -52,7 +52,7 @@ function dsh() {
 
 function sshf() {
   local HOST
-  HOST=$(grep "Host " ~/.ssh/config | awk '{print $2}' | fzf)
+  HOST=$(grep "^Host " ~/.ssh/config | awk '{print $2}' | fzf --header="Host")
   [ -z "$HOST" ] && return || bash -cx "ssh ${*} $HOST"
 }
 
@@ -66,5 +66,7 @@ function weather() {
 
 function mac() {
   # $1: MAC address
-  curl https://www.macvendorlookup.com/api/v2/${1}
+  # Convert MAC address to lowercase and replace '-' with ':'
+  MAC=$(echo ${1} | sed 's/-/:/g' | tr '[:upper:]' '[:lower:]')
+  curl https://www.macvendorlookup.com/api/v2/${MAC}
 }
