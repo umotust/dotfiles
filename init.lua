@@ -342,8 +342,16 @@ local plugins = {
 
               repl_definition = {
                 python = {
-                  command = function()
-                    return { "python", "-m", "IPython", "--no-autoindent" }
+                  command = function(meta)
+                    local file = vim.api.nvim_buf_get_name(meta.current_bufnr)
+                    local exec_line = "__file__ = " .. vim.fn.json_encode(file)
+                    return {
+                      "python",
+                      "-m",
+                      "IPython",
+                      "--no-autoindent",
+                      "--InteractiveShellApp.exec_lines=" .. exec_line,
+                    }
                   end,
                 },
               }, -- repl_definition
