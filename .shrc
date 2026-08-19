@@ -29,6 +29,13 @@ export EXCLUDES=(
   'node_modules'
   '.DS_Store'
 )
+RSYNC_OPTS="-avz --progress --partial"
+RSYNC_EXCLUDES=""
+for exclude in ${EXCLUDES[@]}; do
+  RSYNC_EXCLUDES="$RSYNC_EXCLUDES --exclude=$exclude"
+done
+RSYNC_OPTS="$RSYNC_OPTS $RSYNC_EXCLUDES"
+export RSYNC_OPTS RSYNC_EXCLUDES
 
 # Alias
 alias egrep='egrep --color=auto'

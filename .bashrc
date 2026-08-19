@@ -106,10 +106,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Environment variables
-export RSYNC_EXCLUDES=("${EXCLUDES[@]/#/--exclude=}")
-export RSYNC_OPTS=("-avz" "--partial" "--progress" ${RSYNC_EXCLUDES[@]})
-
 [ -f ~/.functions.sh ] && source ~/.functions.sh
 [ -f ~/.completions.bash ] && source ~/.completions.bash
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local
