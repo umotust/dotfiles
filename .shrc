@@ -11,17 +11,10 @@ else
   alias ls='ls -G'
 fi
 
-# Alias
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias grep='grep --color=auto'
-alias la='ls -A'
-alias ll='ls -alF'
-[ -f ~/.aliases ] && source ~/.aliases
-
 # Environment variable
 export EXCLUDES=(
   '*.egg-info'
+  '*.pyc'
   '*.swp'
   '*.swo'
   '__pycache__'
@@ -36,6 +29,14 @@ export EXCLUDES=(
   'node_modules'
   '.DS_Store'
 )
+
+# Alias
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias la='ls -A'
+alias ll='ls -alF'
+[ -f ~/.aliases ] && source ~/.aliases
 
 # History
 export HISTSIZE=1000

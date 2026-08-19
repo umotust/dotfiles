@@ -25,7 +25,8 @@ function _setup_eza() {
   if command -v eza &> /dev/null; then
     export EZA_COLORS='da=38;5;045:uu=38;5;120'
     alias le='eza -l'
-    alias tre='eza --tree -I "*.pyc|__pycache__|pyu.egg-info"'
+    _eza_excludes=$(IFS="|"; printf "%s" "${EXCLUDES[*]}")
+    alias tre='eza --tree -I $_eza_excludes'
   fi
 }
 _setup_eza
