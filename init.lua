@@ -325,41 +325,50 @@ local plugins = {
     end,
   },
   {
-    "umotust/cellrun.nvim",
-    dependencies = {
-      {
-        "Vigemus/iron.nvim",
-        config = function()
-          local view = require("iron.view")
+    "Vigemus/iron.nvim",
+    config = function()
+      local view = require("iron.view")
+      local common = require("iron.fts.common")
 
-          require("iron.core").setup({
-            config = {
-              scratch_repl = true,
+      require("iron.core").setup({
+        config = {
+          scratch_repl = true,
 
-              repl_open_cmd = view.split.vertical.botright(function()
-                  return math.floor(vim.o.columns * 0.5)
-              end),
+          repl_open_cmd = view.split.vertical.botright(function()
+            return math.floor(vim.o.columns * 0.5)
+          end),
 
-              repl_definition = {
-                python = {
-                  command = function(meta)
-                    local file = vim.api.nvim_buf_get_name(meta.current_bufnr)
-                    local exec_line = "__file__ = " .. vim.fn.json_encode(file)
-                    return {
-                      "python",
-                      "-m",
-                      "IPython",
-                      "--no-autoindent",
-                      "--InteractiveShellApp.exec_lines=" .. exec_line,
-                    }
-                  end,
-                },
-              }, -- repl_definition
-            }, -- config
-          }) -- setup
-        end,
-      },
-    }, -- dependencies
+          repl_definition = {
+            python = {
+              command = function(meta)
+                local bufnr = meta.current_buffer or meta.current_bufnr
+                local file = vim.api.nvim_buf_get_name(bufnr)
+                local exec_line = "__file__ = " .. vim.fn.json_encode(file)
+
+                return {
+                  "python",
+                  "-m",
+                  "IPython",
+                  "--no-autoindent",
+                  "--InteractiveShellApp.exec_lines=" .. exec_line,
+                }
+              end,
+
+              format = common.bracketed_paste_python,
+
+              block_dividers = {
+                "# %%",
+              },
+            },
+          },
+        },
+
+        keymaps = {
+          send_code_block = "<leader>r",
+          send_code_block_and_move = "<leader>R",
+        },
+      })
+    end,
   },
 }
 
