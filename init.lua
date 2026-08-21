@@ -316,21 +316,28 @@ local plugins = {
       { "<leader>R", "<cmd>OverseerToggle<CR>", desc = "Toggle Overseer" },
       {
         "<leader>r",
-        function() require("overseer").run_template({ name = "quickrun_" .. vim.bo.filetype }) end,
+        function()
+          require("overseer").run_template({ name = "quickrun_" .. vim.bo.filetype, })
+        end,
         desc = "QuickRun current file",
       },
     },
     config = function()
-      require("overseer").setup({ templates = { "builtin", "user.quickrun" } })
+      require("overseer").setup({
+        templates = { "builtin", "user.quickrun" },
+      })
     end,
   },
+
   {
     "Vigemus/iron.nvim",
+    ft = { "python" },
     config = function()
+      local iron = require("iron.core")
       local view = require("iron.view")
       local common = require("iron.fts.common")
 
-      require("iron.core").setup({
+      iron.setup({
         config = {
           scratch_repl = true,
 
@@ -362,11 +369,27 @@ local plugins = {
             },
           },
         },
+      })
 
-        keymaps = {
-          send_code_block = "<leader>r",
-          send_code_block_and_move = "<leader>R",
-        },
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "python",
+        callback = function(event)
+          local opts = {
+            buffer = event.buf,
+          }
+
+          vim.keymap.set("n", "<leader>r", function()
+            iron.send_code_block(false)
+          end, vim.tbl_extend("force", opts, {
+            desc = "Iron: Send code block",
+          }))
+
+          vim.keymap.set("n", "<leader>R", function()
+            iron.send_code_block(true)
+          end, vim.tbl_extend("force", opts, {
+            desc = "Iron: Send code block and move",
+          }))
+        end,
       })
     end,
   },
