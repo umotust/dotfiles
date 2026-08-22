@@ -57,6 +57,10 @@ zstyle ':vcs_info:*' actionformats '[%F{039}%b%f|%a]'
 # ls color
 export LSCOLORS=gxfxcxdxbxegedabagacad
 
+# Environment variables
+export RSYNC_EXCLUDES=("${(@)EXCLUDES/#/--exclude=}")
+export RSYNC_OPTS=('-avz' '--progress' '--partial' $RSYNC_EXCLUDES)
+
 # Prompt
 setopt PROMPT_SUBST
 #for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
