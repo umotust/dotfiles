@@ -54,7 +54,6 @@ function plot() {
   SRC=${1:-"-"}
   X_COL=1
   Y_COL=2
-  set -x
   gnuplot -p -e "set terminal dumb; plot '$SRC' using $X_COL:$Y_COL with points"
 }
 
