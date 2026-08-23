@@ -50,6 +50,14 @@ function dsh() {
   pdsh ${@} | dshbak
 }
 
+function plot() {
+  SRC=${1:-"-"}
+  X_COL=1
+  Y_COL=2
+  set -x
+  gnuplot -p -e "set terminal dumb; plot '$SRC' using $X_COL:$Y_COL with points"
+}
+
 function sshf() {
   local HOST
   HOST=$(grep "^Host " ~/.ssh/config | awk '{print $2}' | fzf --header="Host")
