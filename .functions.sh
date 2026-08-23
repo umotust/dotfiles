@@ -56,7 +56,7 @@ function plot() {
   X_COL=1
   Y_COL=2
   CMD="set terminal dumb;"
-  if [ -n ${OPTS} ]; then
+  if [ -n "${OPTS}" ]; then
     CMD="$CMD $OPTS"
   fi
   CMD="$CMD plot '$SRC' using $X_COL:$Y_COL with points"
