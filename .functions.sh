@@ -52,9 +52,15 @@ function dsh() {
 
 function plot() {
   SRC=${1:-"-"}
+  OPTS=$2
   X_COL=1
   Y_COL=2
-  gnuplot -p -e "set terminal dumb; plot '$SRC' using $X_COL:$Y_COL with points"
+  CMD="set terminal dumb;"
+  if [ -n ${OPTS} ]; then
+    CMD="$CMD $OPTS"
+  fi
+  CMD="$CMD plot '$SRC' using $X_COL:$Y_COL with points"
+  bash -xc "gnuplot -p -e \"${CMD}\""
 }
 
 function sshf() {
